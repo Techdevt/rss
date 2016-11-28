@@ -1,0 +1,5 @@
+package: github.com/Techdevt/rss
+import:
+- package: github.com/PuerkitoBio/goquery
+- package: github.com/Sirupsen/logrus
+- package: github.com/axgle/mahonia
