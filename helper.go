@@ -64,9 +64,10 @@ func getSummaryRss1(item rss1_0Item) string {
 		}
 	}
 
-	if !strings.ContainsAny(item.Description, "&lt;&gt;") {
-		rssDesc = item.Description
-	}
+	// if !strings.ContainsAny(item.Description, "&lt;&gt;") {
+	// 	rssDesc = item.Description
+	// }
+  rssDesc = SanitizeUTF8(item.Description)
 
 	if len(fbDesc) >= len(twDesc) {
 		socDesc = fbDesc
@@ -182,9 +183,10 @@ func getSummaryRss2(item rss2_0Item) string {
 		}
 	}
 
-	if !strings.ContainsAny(item.Description, "&lt;&gt;") {
-		rssDesc = item.Description
-	}
+  rssDesc = SanitizeUTF8(item.Description)
+	// if !strings.ContainsAny(item.Description, "&lt;&gt;") {
+	// 	rssDesc = item.Description
+	// }
 
 	if len(fbDesc) >= len(twDesc) {
 		socDesc = fbDesc
