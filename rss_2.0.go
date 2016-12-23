@@ -65,7 +65,7 @@ func parseRSS2(data []byte, read *db) (*Feed, error) {
 		return nil, fmt.Errorf("Error: no feeds found in %q.", string(data))
 	}
 
-	out.Items = make([]*Item, 0, len(channel.Items))
+	out.Items = make(Items, 0, len(channel.Items))
 	out.ItemMap = make(map[string]struct{})
 
 	// Process items.
@@ -135,6 +135,8 @@ func parseRSS2(data []byte, read *db) (*Feed, error) {
 		out.ItemMap[next.ID] = struct{}{}
 		out.Unread++
 	}
+
+	sort.Sort(out.Items)
 
 	if warnings && debug {
 		fmt.Printf("[i] Encountered warnings:\n%s\n", data)

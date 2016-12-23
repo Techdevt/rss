@@ -82,6 +82,8 @@ func FetchByFunc(fetchFunc FetchFunc, url string) (*Feed, error) {
 	return out, nil
 }
 
+type Items []*Item
+
 // Feed is the top-level structure.
 type Feed struct {
 	Nickname    string              `json:"nickname"` // This is not set by the package, but could be helpful.
@@ -90,7 +92,7 @@ type Feed struct {
 	Link        string              `json:"link"`      // Link to the creator's website.
 	UpdateURL   string              `json:"updateurl"` // URL of the feed itself.
 	Image       *Image              `json:"image"`     // Feed icon.
-	Items       []*Item             `json:"items"`
+	Items       Items             `json:"items"`
 	ItemMap     map[string]struct{} `json:"itemmap"` // Used in checking whether an item has been seen before.
 	Refresh     time.Time           `json:"refresh"` // Earliest time this feed should next be checked.
 	Unread      uint32              `json:"unread"`  // Number of unread items. Used by aggregators.
@@ -217,6 +219,18 @@ func (i *Item) Format(indent int) string {
 		fmt.Fprintf(w, "%s%q\n", double, i.Content)
 	}
 	return buf.String()
+}
+
+func (p Items) Len() int {
+  return len(p)
+}
+
+func (p Items) Less(i, j int) bool {
+    return p[i].Date.Before(p[j].Date)
+}
+
+func (p Items) Swap(i, j int) {
+    p[i], p[j] = p[j], p[i]
 }
 
 type Enclosure struct {
